@@ -38,7 +38,7 @@ javac Main.java
 ```markdown
 java Main.java
 ```
-**TO TEST API RUN APIServer.java FOR SIMULATING OPERATIONS WITH WEBINTERFACES. Use the curl commands below to test and ** 
+TO TEST API functionality **Run APIServer.java** FOR SIMULATING OPERATIONS WITH WEBINTERFACES. Use the curl commands below to test. 
 ```markdown
  curl -X POST http://localhost:8080/sql -d "CREATE TABLE users (id INT PRIMARY KEY,name VARCHAR,email VARCHAR)" 
 ```
