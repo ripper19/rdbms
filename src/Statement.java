@@ -1,3 +1,3 @@
 public interface Statement {
-    void execute(Database db);
+    String execute(Database db);
 }

@@ -1,6 +1,6 @@
 public class ShowStatement implements Statement{
     @Override
-    public void execute(Database db) {
-        db.show();
+    public String execute(Database db) {
+        return db.show();
     }
 }

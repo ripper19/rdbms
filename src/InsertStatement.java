@@ -10,7 +10,8 @@ public InsertStatement(String name, Map<String,Object> values){
 }
 
     @Override
-    public void execute(Database db) {
+    public String execute(Database db) {
     db.insertInto(name,values);
+    return "Fields inserted into table "+name;
     }
 }

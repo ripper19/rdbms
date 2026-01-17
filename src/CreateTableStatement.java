@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CreateTableStatement implements Statement {
     private final String tableName;
@@ -9,7 +10,11 @@ public class CreateTableStatement implements Statement {
         this.columns=columns;
     }
     @Override
-    public void execute(Database db) {
+    public String execute(Database db) {
         db.createTable(tableName,columns);
+        String columnNames = columns.stream()
+                .map(Column::getName)
+                .collect(Collectors.joining(", "));
+        return "Table "+tableName+ " created with columns: " + columnNames;
     }
 }

@@ -6,7 +6,8 @@ public class DeleteStatement implements Statement{
         this.primary=primary;
     }
     @Override
-    public void execute(Database db) {
+    public String execute(Database db) {
         db.delete(tableName,primary);
+        return "Row " + primary + " deleted";
     }
 }

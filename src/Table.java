@@ -121,18 +121,21 @@ public class Table {
         }
     }
 
-    public void selectAll() {
+    public String selectAll() {
+        StringBuilder builder = new StringBuilder();
+
         for (Column c : columns) {
-            System.out.print(c.getName() + "\t");
+            builder.append(c.getName()).append("\t");
         }
-        System.out.println();
+        builder.append("\n");
 
         for (Row row : rows) {
             for (Column column : columns) {
-                System.out.print(row.get(column.getName()) + "\t");
+                builder.append(row.get(column.getName())).append("\t");
             }
-            System.out.println();
+            builder.append("\n");
         }
+        return builder.toString();
     }
     private Object convertToType(Object value, Column column){
         if (value==null) return null;

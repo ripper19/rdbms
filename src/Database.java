@@ -37,12 +37,17 @@ public class Database {
     }
 
     //LOOP THROUGH AND PRINT
-    public void show(){
-        tables.keySet().forEach(System.out::println);
+    public String show(){
+        StringBuilder builder = new StringBuilder();
+        for (String table: tables.keySet()){
+            builder.append(table);
+        }
+        return builder.toString();
     }
 
-    public void selectAllData(String name){
+    public String selectAllData(String name){
+        StringBuilder builder = new StringBuilder();
         Table table = getTable(name);
-        table.selectAll();
+        return table.selectAll();
     }
 }

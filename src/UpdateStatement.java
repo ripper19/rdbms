@@ -10,7 +10,8 @@ public class UpdateStatement implements Statement{
         this.values=values;
     }
     @Override
-    public void execute(Database db) {
+    public String execute(Database db) {
         db.updates(name,primary,values);
+        return "Field "+primary+ "in table "+name+" updated";
     }
 }
