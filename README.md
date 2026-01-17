@@ -24,17 +24,22 @@ A lightweight, in-memory relational database management system built entirely in
 - Basic Java Development Environment
 
 **Installation**
+bash
+```markdown
 git clone https://github.com/ripper19/rdbms.git
 cd rdbms/src
+```
 
 **Compile**
+```markdown
 javac Main.java
-
+```
 **Run the db**
+```markdown
 java Main.java
-
+```
 **SYNTAX**
-
+```markdown
 CREATE TABLE users (id INT PRIMARY KEY, name VARCHAR, email VARCHAR UNIQUE)
 
 INSERT INTO users (name, email, id) VALUES('John Doe', 'john@example.com', 30)
@@ -49,26 +54,41 @@ SELECT ALL FROM users
 
 These Deviate slightly from normal sql syntax, this was done for ease during parsing. If a statement here doesnt work as intended 
 Check Regex pattern in parser or type "help" in REPL for more concrete commands for testing.
-
+```
 **File Structure**
-
 .
 ├── Column.java              - Column Definitions
+
 ├── CreateTableStatement.java - CreateTable Statement
+
 ├── Database.java             - Database Engine
+
 ├── DataType.java             - Defines for Datatypes
+
 ├── DeleteStatement.java      - Delete Table Statement
+
 ├── Index.java                - Describes primary and unique Indexes
+
 ├── InsertStatement.java      - Insert Statement
+
 ├── Main.java                 - Contains REPL
+
 ├── ParseColumns.java         - Parses columns during creation with constraints
+
 ├── Parser.java               - Parser for data
+
 ├── Row.java                  - Defines Row and Constraints
+
 ├── SelectAllStatement.java   - Select Statement
+
 ├── ShowStatement.java        - Show all tables Statement
+
 ├── Statement.java            - Abstract class for Statements defining core methods
+
 ├── Table.java                - Defines Table behaviour
+
 └── UpdateStatement.java      - Update Statement
+
 
 **Current Limitations**:
 No persistent storage (in-memory only)
