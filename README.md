@@ -90,16 +90,15 @@ Check Regex pattern in parser or type "help" in REPL for more concrete commands 
 └── UpdateStatement.java      - Update Statement
 
 
-**Current Limitations**:
-No persistent storage (in-memory only)
-Basic query capabilities
-No transaction support
-No join operations
-Limited error handling
+**Current Limitations**
+- No persistent storage (in-memory only)
+- Basic query capabilities
+- No transaction support
+- No join operations
+- Limited error handling
 
 **Learning Objectives**
 This project serves as an educational tool to understand:
-
 - How databases store and organize data
 - The implementation of basic SQL operations
 - Type safety and data validation in databases
