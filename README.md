@@ -35,23 +35,35 @@ java Main.java
 
 **SYNTAX**:
 CREATE TABLE users (id INT PRIMARY KEY, name VARCHAR, email VARCHAR UNIQUE)
+
 INSERT INTO users (name, email, id) VALUES('John Doe', 'john@example.com', 30)
+
 UPDATE users SET(name='John') WHERE(id=1)
+
 DELETE FROM users WHERE (id=1)
+
 SHOW TABLES
+
 SELECT ALL FROM users
+
 
 These Deviate slightly from normal sql syntax, this was done for ease during parsing. If a statement here doesnt work as intended 
 Check Regex pattern in parser or type "help" in REPL for more concrete commands for testing.
 
 **File Structure**
 .
-├── Column.java - #Column Definitions
-├── CreateTableStatement.java - #CreateTable Statement 
+├── Column.java - #Column Definitions \n
+
+├── CreateTableStatement.java - #CreateTable Statement
+
 ├── Database.java - #Database Engine
+
 ├── DataType.java - #Defines for Datatypes
+
 ├── DeleteStatement.java - #DeleteTable Statement
-├── Index.java  - #Describes primary and unique Indexes                                                                                                                                                                           
+
+├── Index.java  - #Describes primary and unique Indexes
+
 ├── InsertStatement.java - #Insert Statement                                                                                                                                                                
 ├── Main.java - #Contains REPL.                                                                                                                                                
 ├── ParseColumns.java - #Parses columns during creation to effectively place columns in table with correct constraints                                                                                                                                                              
