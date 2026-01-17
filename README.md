@@ -93,8 +93,6 @@ Check Regex pattern in parser or type "help" in REPL for more concrete commands 
 **Current Limitations**
 - No persistent storage (in-memory only)
 - Basic query capabilities
-- No transaction support
-- No join operations
 - Limited error handling
 
 **Learning Objectives**
