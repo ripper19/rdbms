@@ -33,7 +33,8 @@ javac Main.java
 **Run the db**
 java Main.java
 
-**SYNTAX**:
+**SYNTAX**
+
 CREATE TABLE users (id INT PRIMARY KEY, name VARCHAR, email VARCHAR UNIQUE)
 
 INSERT INTO users (name, email, id) VALUES('John Doe', 'john@example.com', 30)
@@ -46,11 +47,11 @@ SHOW TABLES
 
 SELECT ALL FROM users
 
-
 These Deviate slightly from normal sql syntax, this was done for ease during parsing. If a statement here doesnt work as intended 
 Check Regex pattern in parser or type "help" in REPL for more concrete commands for testing.
 
 **File Structure**
+
 .
 ├── Column.java              - Column Definitions
 ├── CreateTableStatement.java - CreateTable Statement
