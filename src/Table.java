@@ -1,0 +1,144 @@
+import java.util.*;
+
+public class Table {
+    private final String name;
+    private final List<Column> columns;
+    private final List<Row> rows = new ArrayList<>();
+    private final Map<Object, Row> primaryKeyIndex = new HashMap<>();
+    private final Map<String, Map<Object, Row>> uniqueIndex = new HashMap<>();
+
+    private Column primaryKeyColumn;
+
+    public Table(String name, List<Column> columns) {
+        this.name = name;
+        this.columns = columns;
+
+        for (Column c : columns) {
+            if (c.isPrimaryKey()) {
+                if (primaryKeyColumn != null) throw new RuntimeException("Multiple primary Keys arent supported");
+                primaryKeyColumn = c;
+            }
+            if (c.isPrimaryKey() || c.isUnique()) {
+                uniqueIndex.put(c.getName(), new HashMap<>());
+            }
+        }
+    }
+
+    public void addColumns(List<Column> inColumns) {
+        columns.addAll(inColumns);
+    }
+
+    public void insert(Map<String, Object> values) {
+
+        if (primaryKeyColumn != null) {
+            String pkName = primaryKeyColumn.getName();
+            Object pkValue = values.get(pkName);
+
+            if (pkValue == null) throw new RuntimeException("Primary Key missing.");
+            if (primaryKeyIndex.containsKey(pkValue))
+                throw new RuntimeException("Primary Key already set: " + pkValue);
+        }
+        for (Map.Entry<String, Map<Object, Row>> entry : uniqueIndex.entrySet()) {
+            Object val = values.get(entry.getKey());
+            if (val != null && entry.getValue().containsKey(val)) {
+                throw new RuntimeException("Unique key violation on " + entry.getKey());
+            }
+        }
+        Map<String,Object> typedValues = new HashMap<>();
+        for (Column c:columns){
+            Object raw = values.get(c.getName());
+
+            Object convType = convertToType(raw,c);
+            typedValues.put(c.getName(),convType);
+        }
+
+        Row row = new Row(typedValues);
+        rows.add(row);
+
+        if (primaryKeyColumn != null) {
+            primaryKeyIndex.put(values.get(primaryKeyColumn.getName()), row);
+        }
+        for (Map.Entry<String, Map<Object, Row>> entry : uniqueIndex.entrySet()) {
+            Object val = values.get(entry.getKey());
+            if (val != null) {
+                entry.getValue().put(val, row);
+            }
+        }
+    }
+
+    public void update(String primary, Map<String, Object> values) {
+        try {
+            if (!primaryKeyIndex.containsKey(primary)) {
+                throw new RuntimeException("Invalid field Argument");
+            }
+
+            Row matchingRow = primaryKeyIndex.get(primary);
+            Object newPrimaryKeyValue = null;
+
+            for (Map.Entry<String, Object> entry : values.entrySet()) {
+                String columnName = entry.getKey();
+                Object newValue = entry.getValue();
+
+                Column targetColumn = null;
+                for (Column c : columns) {
+                    if (c.getName().equals(columnName)) {
+                        targetColumn =c;
+                        break;
+                    }
+                }
+                if (targetColumn==null) throw new RuntimeException("Column " + columnName + " not found");
+
+                Object typedValue = convertToType(newValue, targetColumn);
+                matchingRow.set(columnName, typedValue);
+                System.out.println("Column: " +columnName+" changed value to: "+newValue);
+
+                if (targetColumn.isPrimaryKey()) {
+                    if (!newValue.equals(primary) && primaryKeyIndex.containsKey(newValue)) {
+                        throw new RuntimeException("Value already exists. Constraint violation.");
+                    }
+                    newPrimaryKeyValue = newValue;
+
+                }
+            }
+            if (newPrimaryKeyValue != null && !newPrimaryKeyValue.equals(primary)) {
+                primaryKeyIndex.remove(primary);
+                primaryKeyIndex.put(newPrimaryKeyValue, matchingRow);
+            }
+
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Failed" + e.getMessage());
+        }
+    }
+
+    public void delete(Object primary) {
+        if (!primaryKeyIndex.containsKey(primary)) throw new RuntimeException("Cannot find this Field");
+        Row matchingRow = primaryKeyIndex.get(primary);
+        rows.remove(matchingRow);
+
+        primaryKeyIndex.remove(matchingRow);
+        for (Map<Object, Row> index : uniqueIndex.values()) {
+            index.values().remove(matchingRow);
+        }
+    }
+
+    public void selectAll() {
+        for (Column c : columns) {
+            System.out.print(c.getName() + "\t");
+        }
+        System.out.println();
+
+        for (Row row : rows) {
+            for (Column column : columns) {
+                System.out.print(row.get(column.getName()) + "\t");
+            }
+            System.out.println();
+        }
+    }
+    private Object convertToType(Object value, Column column){
+        if (value==null) return null;
+        return switch (column.getType()){
+            case INT ->     Integer.parseInt(value.toString());
+            case VARCHAR, BOOLEAN -> value.toString();
+        };
+    }
+}
