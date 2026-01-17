@@ -38,6 +38,19 @@ javac Main.java
 ```markdown
 java Main.java
 ```
+**TO TEST API RUN APIServer.java FOR SIMULATING OPERATIONS WITH WEBINTERFACES. Use the curl commands below to test and ** 
+```markdown
+ curl -X POST http://localhost:8080/sql -d "CREATE TABLE users (id INT PRIMARY KEY,name VARCHAR,email VARCHAR)" 
+```
+```markdown
+ curl -X POST http://localhost:8080/sql -d "SHOW TABLES"
+```
+```markdown
+ curl -X POST http://localhost:8080/sql -d "INSERT INTO users (name,email,id) VALUES('John",'joh@email.com',1)"
+```
+```markdown
+ curl -X POST http://localhost:8080/sql -d "SELECT ALL FROM users"
+```
 **SYNTAX**
 ```markdown
 CREATE TABLE users (id INT PRIMARY KEY, name VARCHAR, email VARCHAR UNIQUE)
