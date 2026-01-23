@@ -8,6 +8,10 @@ public class Table {
     private final Map<String, Map<Object, Row>> uniqueIndex = new HashMap<>();
 
     private Column primaryKeyColumn;
+    /*
+    one primary key per table
+
+     */
 
     public Table(String name, List<Column> columns) {
         this.name = name;
@@ -137,11 +141,25 @@ public class Table {
         }
         return builder.toString();
     }
+
     private Object convertToType(Object value, Column column){
+        /*
+        Used to convert all data to strings during inserts and updates for type safety during comparisons
+         */
         if (value==null) return null;
         return switch (column.getType()){
             case INT ->     Integer.parseInt(value.toString());
             case VARCHAR, BOOLEAN -> value.toString();
         };
+    }
+    public String[] AllColumns() {
+        List<String> getCols = new ArrayList<>();
+        for (Column c : columns) {
+            getCols.add(c.getName());
+        }
+        return getCols.toArray(new String[0]);
+    }
+    public List<Row> getRows(){
+        return rows;
     }
 }

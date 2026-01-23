@@ -42,9 +42,10 @@ public class Parser {
             String tablename = matcher.group(1);
             String columnDefine = matcher.group(2);
             List<Column> columns = parseColumns.parseColumns(columnDefine);
+            System.out.println("Starting[*]");
             return new CreateTableStatement(tablename, columns);
         }catch (RuntimeException e){
-            throw new RuntimeException("Error occured: "+e.getMessage());
+            throw new RuntimeException("Error occurred: "+e.getMessage());
         }
     }
     private InsertStatement parseInsert(String sql) throws SQLException {
@@ -144,17 +145,37 @@ public class Parser {
         return new DeleteStatement(tableName,index);
     }
 
-    private SelectAllStatement parseSelectAll(String sql){
-        Pattern pattern = Pattern.compile(
-                "SELECT ALL FROM (\\w+)",
-                Pattern.CASE_INSENSITIVE
-        );
+    private Statement parseSelectAll(String sql) {
+        //joins using select
+        if (sql.toUpperCase().contains("JOIN")) {
+            Pattern pattern = Pattern.compile(
+                    "SELECT +(.+) +FROM +(\\w+) +JOIN +(\\w+) +ON +(.+)",
+                    Pattern.CASE_INSENSITIVE
+            );
+            Matcher matcher = pattern.matcher(sql);
+            String rows = matcher.group(1);
+            String firstTable = matcher.group(2);
+            String secondTable = matcher.group(3);
+            String condition = matcher.group(4);
 
-        Matcher matcher = pattern.matcher(sql);
-        if (!matcher.matches()) throw new RuntimeException("Invalid Select All Statement");
+            String[]individualRows = rows.split(",");
+            String[]checkCond = condition.split("=",2);
 
-        String tableName = matcher.group(1);
+            return new joinStatement(firstTable,secondTable,individualRows,checkCond);
+        }
+        else
+        {
+            Pattern pattern = Pattern.compile(
+                    "SELECT ALL FROM (\\w+)",
+                    Pattern.CASE_INSENSITIVE
+            );
 
-        return new SelectAllStatement(tableName);
+            Matcher matcher = pattern.matcher(sql);
+            if (!matcher.matches()) throw new RuntimeException("Invalid Select All Statement");
+
+            String tableName = matcher.group(1);
+
+            return new SelectAllStatement(tableName);
+        }
     }
 }

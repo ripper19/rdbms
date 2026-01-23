@@ -33,7 +33,8 @@ public class Main {
             }
             try {
                 Statement statement = parser.parse(sql);
-                statement.execute(db);
+                String result = statement.execute(db);
+                System.out.println(result);
             } catch (SQLException | RuntimeException e) {
                 System.out.println("error: "+e.getMessage());
             }

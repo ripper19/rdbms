@@ -15,6 +15,7 @@ public class CreateTableStatement implements Statement {
         String columnNames = columns.stream()
                 .map(Column::getName)
                 .collect(Collectors.joining(", "));
+        System.out.println("Prinitng");
         return "Table "+tableName+ " created with columns: " + columnNames;
     }
 }
