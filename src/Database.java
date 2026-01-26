@@ -38,7 +38,7 @@ public class Database {
     public String show(){
         StringBuilder builder = new StringBuilder();
         for (String table: tables.keySet()){
-            builder.append(table);
+            builder.append(table).append("\n");
         }
         return builder.toString();
     }
